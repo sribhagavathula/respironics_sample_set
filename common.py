@@ -2,6 +2,13 @@ from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
+'''
+take as input a dict with csv file for subject and another csv for bedpartner
+including how many lines must be skipped for each csv file (it differs slightly)
+note to self, be mindful that pandas counts from 0 but libreoffice counts from 1 instead!
+read_csv also has header=, but no need to specify it for the actiwatch files if skiprows= is chosen correctly
+'''
 def read_csv(pair):
   new_colnames = {
     "Line":"line",
@@ -25,6 +32,17 @@ def read_csv(pair):
 
   return [sdata, pdata]
 
+
+'''
+it seems the plotting features of Pandas DataFrame are really made
+to be used with _one_ DataFrame or at least i was not able to figure
+out how to do the things i wanted to do with multiple DataFrames, so
+making one DataFrame containing all the data I need from the original
+CSV files.
+as for why making it into time series data? because that makes it much
+easier to slice, https://stackoverflow.com/a/49668702 also for this.
+docs for .concat: https://pandas.pydata.org/docs/reference/api/pandas.concat.html
+'''
 def join_data(sdata, pdata):
   print('joining subject and bedpartner data')
 
@@ -47,12 +65,23 @@ def join_data(sdata, pdata):
 
   return data
 
+
+'''
+does what it says in the name
+i thought this would be more work
+'''
 def resample_data(data, binstring):
   print(f"resampling data for {binstring} bins")
 
   data = data.resample(binstring).mean()
   return data
 
+
+'''
+the data is not really about "a week", it's more about nights (not really "days" either)
+so i want to be able to compare them
+so i need to separate them from one another
+'''
 def slice_data(data, first_hour = 21, last_hour = 6, first_day = 22, last_day = 30):
   print(f"slicing data into regular intervals from {first_hour}:00 to {last_hour}:00")
 

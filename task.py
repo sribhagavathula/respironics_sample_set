@@ -1,6 +1,12 @@
+'''
+the full dataset is available at https://zenodo.org/record/4961281 
+(just need to google one of the CSV file names, that's it!!!)
+'''
+
 import common
 import plot1
 import plot2
+import plot3
 
 subjectAndBedpartner_pairs = [
   {
@@ -12,7 +18,12 @@ subjectAndBedpartner_pairs = [
 sdata, pdata = common.read_csv(subjectAndBedpartner_pairs[0])
 data = common.join_data(sdata, pdata)
 
-plot1.make_plot(data, sampling_time = '30Min', first_hour = 22, last_hour = 6, act_max = 200, light_max = 2000)
+# both persons' activity in one plot for each period
+#plot1.make_plot(data) # original sampling time is 1Min
 
-plot2.make_plot(data, sampling_time = '60Min', first_hour = 21, last_hour = 6) # each night
-plot2.make_plot(data, sampling_time = '60Min', first_hour = 10, last_hour = 18) # each day
+# pie charts for r/g/b light percentages for each person and each period
+#plot2.make_plot(data, sampling_time = '60Min', first_hour = 21, last_hour = 6) # each night
+#plot2.make_plot(data, sampling_time = '60Min', first_hour = 10, last_hour = 18) # each day
+
+# activity vs. light for each period, once for subject and once for bed partner
+#plot3.make_plot(data, sampling_time = '5Min', first_hour = 20, last_hour = 8, act_max = 50, light_max = 350)
