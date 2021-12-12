@@ -10,6 +10,7 @@ def make_plot(data, sampling_time = False, first_hour = 14, last_hour = 14, act_
   if sampling_time: data = common.resample_data(data, sampling_time)
   if not act_max: act_max = max([data.p_act.max(), data.s_act.max()])
   if not light_max: light_max = max([data.p_light.max(), data.s_light.max()])
+  
   print(f"act_max: {int(act_max)}")
   print(f"light_max: {int(light_max)}")
 
@@ -18,7 +19,7 @@ def make_plot(data, sampling_time = False, first_hour = 14, last_hour = 14, act_
 
   sslices = common.slice_data(sdata, first_hour = first_hour, last_hour = last_hour)
   pslices = common.slice_data(pdata, first_hour = first_hour, last_hour = last_hour)
-  
+
   ###
 
   fig, axs = plt.subplots(8,1, figsize=[12,18], constrained_layout=True)
@@ -41,15 +42,16 @@ def make_plot(data, sampling_time = False, first_hour = 14, last_hour = 14, act_
     ax[i].right_ax.set_ylim(0, act_max)
     i += 1
 
-  png = f'subject-timeVsLight_{sampling_time}Bin_{first_hour}-{last_hour}.png'
+  if not sampling_time: sampling_time = '1Min'
+  png = f'plots/plot3-subject_{sampling_time}Bin_{first_hour}-{last_hour}.png'
   print(f"writing {png}")
-  plt.savefig(png, bbox_inches = 'tight', dpi = 600)
+  plt.savefig(png, bbox_inches = 'tight', dpi = 500)
   plt.close()
   
   ###
 
   fig, axs = plt.subplots(8,1, figsize=[12,18], constrained_layout=True)
-  ax = axs.ravel()
+  ax = axs.ravel() # functions the same way as .reshape()
   fig.suptitle(f'Activity (strong) and White Light (faint) of BED PARTNER')
   fig.supxlabel('Time')
   pcolors = ['darkslateblue', 'slateblue']
@@ -68,7 +70,8 @@ def make_plot(data, sampling_time = False, first_hour = 14, last_hour = 14, act_
     ax[i].right_ax.set_ylim(0, act_max)
     i += 1
 
-  png = f'partner-timeVsLight_{sampling_time}Bin_{first_hour}-{last_hour}.png'
+  if not sampling_time: sampling_time = '1Min'
+  png = f'plots/plot3-partner_{sampling_time}Bin_{first_hour}-{last_hour}.png'
   print(f"writing {png}")
   plt.savefig(png, bbox_inches = 'tight', dpi = 600)
   plt.close()

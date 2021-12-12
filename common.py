@@ -2,10 +2,10 @@ from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
 '''
 take as input a dict with csv file for subject and another csv for bedpartner
 including how many lines must be skipped for each csv file (it differs slightly)
+
 note to self, be mindful that pandas counts from 0 but libreoffice counts from 1 instead!
 read_csv also has header=, but no need to specify it for the actiwatch files if skiprows= is chosen correctly
 '''
@@ -22,14 +22,14 @@ def read_csv(pair):
   print(f"reading {csv} from line {skip}")
   sdata = pd.read_csv(csv, skiprows = skip)
   sdata = sdata.rename(columns = new_colnames)
-  sdata["datetime"] = pd.to_datetime(sdata['date'] + ' ' + sdata['time'])
+  sdata["datetime"] = pd.to_datetime(sdata['date'] + ' ' + sdata['time']) 
 
   csv, skip = pair['partner']
   print(f"reading {csv} from line {skip}")
   pdata = pd.read_csv(csv, skiprows = skip)
   pdata = pdata.rename(columns = new_colnames)
   pdata["datetime"] = pd.to_datetime(pdata['date'] + ' ' + pdata['time'])
-
+  print(csv,skip)
   return [sdata, pdata]
 
 
@@ -39,8 +39,10 @@ to be used with _one_ DataFrame or at least i was not able to figure
 out how to do the things i wanted to do with multiple DataFrames, so
 making one DataFrame containing all the data I need from the original
 CSV files.
+
 as for why making it into time series data? because that makes it much
 easier to slice, https://stackoverflow.com/a/49668702 also for this.
+
 docs for .concat: https://pandas.pydata.org/docs/reference/api/pandas.concat.html
 '''
 def join_data(sdata, pdata):
@@ -68,7 +70,7 @@ def join_data(sdata, pdata):
 
 '''
 does what it says in the name
-i thought this would be more work
+create bins as per requirement
 '''
 def resample_data(data, binstring):
   print(f"resampling data for {binstring} bins")

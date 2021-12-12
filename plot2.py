@@ -12,6 +12,7 @@ then i got interested how much the colour of the light may be different between 
 def make_plot(data, sampling_time = False, first_hour = 14, last_hour = 14):
 
   if sampling_time: data = common.resample_data(data, sampling_time)
+  
   data = data.drop(columns = ['s_act','s_light', 'p_act','p_light'])
   time_slices = common.slice_data(data, first_hour = first_hour, last_hour = last_hour)
 
@@ -68,10 +69,11 @@ def make_plot(data, sampling_time = False, first_hour = 14, last_hour = 14):
 
     i += 1
     j += 2
-
-  png = f'nightly_rgb_pies-{sampling_time}Bin_{first_hour}-{last_hour}.png'
+  
+  if not sampling_time: sampling_time = '1Min'
+  png = f'plots/plot2_{sampling_time}Bin_{first_hour}-{last_hour}.png'
   print(f"writing {png}")
   # https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html
-  plt.savefig(png, bbox_inches = 'tight', dpi = 600)
+  plt.savefig(png, bbox_inches = 'tight', dpi = 500)
   #plt.show()
   plt.close()
